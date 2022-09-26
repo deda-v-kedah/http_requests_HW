@@ -1,5 +1,8 @@
 from pprint import pprint
+import datetime as DT
 import requests
+
+
 
 class YaUploader:
     def __init__(self, token: str):
@@ -37,13 +40,28 @@ def smartest_superhero():
     print(f"Самый умный: {iq_belongs} со значением: {iq}")
 
 
+todate = DT.datetime.now()
+todate = todate.replace(tzinfo=DT.timezone.utc)
+todate = int(todate.timestamp())
+two_day = 172800
+fromdate = todate - two_day
+
+url = f"https://api.stackexchange.com//2.3/questions?fromdate={fromdate}&todate={todate}&order=desc&sort=activity&tagged=python&site=stackoverflow"
+response = requests.get(url)
+
+pprint(response.json())
+
+
+
 #smartest_superhero()
 
-with open('my_token.txt', 'rt') as f:
-    f_token = f.readline()
 
-path_to_file = "text.txt"
-token = f_token
-uploader = YaUploader(token)
-result = uploader.upload(path_to_file)
-print(result)
+
+# with open('my_token.txt', 'rt') as f:
+#     f_token = f.readline()
+
+# path_to_file = "text.txt"
+# token = f_token
+# uploader = YaUploader(token)
+# result = uploader.upload(path_to_file)
+# print(result)
